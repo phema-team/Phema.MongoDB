@@ -8,25 +8,25 @@ using MongoDB.Driver;
 
 namespace Phema.MongoDB
 {
-	public interface IMongoDBCollectionConfiguration
+	public interface IMongoDBCollectionBuilder
 	{
-		IMongoDBCollectionConfiguration AddCollection<TEntity>(
+		IMongoDBCollectionBuilder AddCollection<TEntity>(
 			string collection,
 			Action<MongoCollectionSettings> options = null);
 	}
 	
-	internal sealed class MongoDBColletionConfiguration : IMongoDBCollectionConfiguration
+	internal sealed class MongoDBColletionBuilder : IMongoDBCollectionBuilder
 	{
 		private readonly IServiceCollection services;
 		private readonly string database;
 
-		public MongoDBColletionConfiguration(IServiceCollection services, string database)
+		public MongoDBColletionBuilder(IServiceCollection services, string database)
 		{
 			this.services = services;
 			this.database = database;
 		}
 
-		public IMongoDBCollectionConfiguration AddCollection<TEntity>(
+		public IMongoDBCollectionBuilder AddCollection<TEntity>(
 			string collection,
 			Action<MongoCollectionSettings> options = null)
 		{

@@ -6,26 +6,26 @@ using MongoDB.Driver;
 
 namespace Phema.MongoDB
 {
-	public interface IMongoDBDatabaseConfiguration
+	public interface IMongoDBDatabaseBuilder
 	{
-		IMongoDBDatabaseConfiguration AddDatabase(
+		IMongoDBDatabaseBuilder AddDatabase(
 			string database,
-			Action<IMongoDBCollectionConfiguration> configuration,
+			Action<IMongoDBCollectionBuilder> builder,
 			Action<MongoDatabaseSettings> options = null);
 	}
 	
-	internal sealed class MongoDBDatabaseConfiguration : IMongoDBDatabaseConfiguration
+	internal sealed class MongoDBDatabaseBuilder : IMongoDBDatabaseBuilder
 	{
 		private readonly IServiceCollection services;
 
-		public MongoDBDatabaseConfiguration(IServiceCollection services)
+		public MongoDBDatabaseBuilder(IServiceCollection services)
 		{
 			this.services = services;
 		}
 
-		public IMongoDBDatabaseConfiguration AddDatabase(
+		public IMongoDBDatabaseBuilder AddDatabase(
 			string database,
-			Action<IMongoDBCollectionConfiguration> configuration,
+			Action<IMongoDBCollectionBuilder> builder,
 			Action<MongoDatabaseSettings> options = null)
 		{
 			var settings = new MongoDatabaseSettings();
@@ -36,7 +36,7 @@ namespace Phema.MongoDB
 				o.Databases.Add(database, sp => sp.GetRequiredService<IMongoClient>()
 					.GetDatabase(database, settings)));
 
-			configuration.Invoke(new MongoDBColletionConfiguration(services, database));
+			builder.Invoke(new MongoDBColletionBuilder(services, database));
 			
 			return this;
 		}

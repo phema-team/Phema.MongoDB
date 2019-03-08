@@ -9,14 +9,14 @@ namespace Phema.MongoDB
 {
 	public static class MongoDBExtensions
 	{
-		public static IMongoDBDatabaseConfiguration AddPhemaMongoDB(this IServiceCollection services, MongoClientSettings settings)
+		public static IMongoDBDatabaseBuilder AddPhemaMongoDB(this IServiceCollection services, MongoClientSettings settings)
 		{
 			services.TryAddSingleton<IMongoClient>(sp => new MongoClient(settings));
 
-			return new MongoDBDatabaseConfiguration(services);
+			return new MongoDBDatabaseBuilder(services);
 		}
 		
-		public static IMongoDBDatabaseConfiguration AddPhemaMongoDB(
+		public static IMongoDBDatabaseBuilder AddPhemaMongoDB(
 			this IServiceCollection services,
 			Action<MongoClientSettings> options)
 		{
@@ -27,7 +27,7 @@ namespace Phema.MongoDB
 			return services.AddPhemaMongoDB(settings);
 		}
 		
-		public static IMongoDBDatabaseConfiguration AddPhemaMongoDB(
+		public static IMongoDBDatabaseBuilder AddPhemaMongoDB(
 			this IServiceCollection services,
 			string connectionString)
 		{
