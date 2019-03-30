@@ -1,22 +1,23 @@
 using System;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-
 using MongoDB.Driver;
+using Phema.MongoDB.Internal;
 
 namespace Phema.MongoDB
 {
 	public static class MongoDBExtensions
 	{
-		public static IMongoDBDatabaseBuilder AddPhemaMongoDB(this IServiceCollection services, MongoClientSettings settings)
+		public static IMongoDBDatabaseBuilder AddMongoDB(
+			this IServiceCollection services,
+			MongoClientSettings settings)
 		{
 			services.TryAddSingleton<IMongoClient>(sp => new MongoClient(settings));
 
 			return new MongoDBDatabaseBuilder(services);
 		}
-		
-		public static IMongoDBDatabaseBuilder AddPhemaMongoDB(
+
+		public static IMongoDBDatabaseBuilder AddMongoDB(
 			this IServiceCollection services,
 			Action<MongoClientSettings> options)
 		{
@@ -24,16 +25,16 @@ namespace Phema.MongoDB
 
 			options(settings);
 
-			return services.AddPhemaMongoDB(settings);
+			return services.AddMongoDB(settings);
 		}
-		
-		public static IMongoDBDatabaseBuilder AddPhemaMongoDB(
+
+		public static IMongoDBDatabaseBuilder AddMongoDB(
 			this IServiceCollection services,
 			string connectionString)
 		{
 			var settings = MongoClientSettings.FromConnectionString(connectionString);
-			
-			return services.AddPhemaMongoDB(settings);
+
+			return services.AddMongoDB(settings);
 		}
 	}
 }

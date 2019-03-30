@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-
 using MongoDB.Driver;
 
-namespace Phema.MongoDB
+namespace Phema.MongoDB.Internal
 {
 	internal sealed class MongoDBOptions
 	{
@@ -11,7 +10,7 @@ namespace Phema.MongoDB
 		{
 			Databases = new Dictionary<string, Func<IServiceProvider, IMongoDatabase>>();
 		}
-		
+
 		public IDictionary<string, Func<IServiceProvider, IMongoDatabase>> Databases { get; }
 	}
 }
